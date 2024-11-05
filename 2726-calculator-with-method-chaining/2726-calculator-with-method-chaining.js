@@ -4,6 +4,9 @@ class Calculator {
      * @param {number} value
      */
     constructor(value) {
+        if (typeof value !== "number") {
+            throw new Error("Input value must be a number");
+        }
         this.value = value;
     }
     
