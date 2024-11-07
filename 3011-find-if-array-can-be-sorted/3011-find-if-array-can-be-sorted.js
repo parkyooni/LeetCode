@@ -4,20 +4,20 @@
  */
 
 const canSortArray = function(nums) {
-    const numberArray = nums.map(Number);
-  
-    const countSetBits = (num) => num.toString(2).split('1').length - 1;
-  
-    for (let i = 0; i < numberArray.length; i ++) {
-      if (typeof numberArray[i] !== 'number' || isNaN(numberArray[i])) return false;
-      
-      for (let j = 1; j < numberArray.length; j ++) {
-        if (numberArray[j] < numberArray[j-1]) {
-           if(countSetBits(numberArray[j-1]) !== countSetBits(numberArray[j])) return false
-          else [numberArray[j - 1], numberArray[j]] = [numberArray[j],numberArray[j -1]]
-        }
+  const numberArray = nums.map(Number);
+  const countSetBits = (num) => num.toString(2).split('1').length - 1;
+
+  const numberGroups = [];
+  for(let num of numberArray) {
+      const value = countSetBits(num);
+      if(numberGroups.some((index) => index.value !== value && index.num > num)) {
+          return false;
       }
-    }
+
+      if(!numberGroups.some((index) => index.num === num)) {
+          numberGroups.push({num, value});
+      }
+  }
   
-    return true;
+  return true;
 };
