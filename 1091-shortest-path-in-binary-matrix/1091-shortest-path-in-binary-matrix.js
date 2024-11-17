@@ -1,7 +1,7 @@
 const shortestPathBinaryMatrix = function (grid) {
-    const gridSize = grid.length;
+    const n = grid.length;
 
-    if (grid[0][0] !== 0 || grid[gridSize - 1][gridSize - 1] !== 0) return -1;
+    if (grid[0][0] !== 0 || grid[n - 1][n - 1] !== 0) return -1;
 
     const directions = [
         [-1, 0], [1, 0], [0, -1], [0, 1],
@@ -11,20 +11,20 @@ const shortestPathBinaryMatrix = function (grid) {
     const queue = [[0, 0, 1]];
     grid[0][0] = 1;
 
-    const isValid = (r, c) => r >= 0 && c >= 0 && r < gridSize && c < gridSize && grid[r][c] === 0;
+    const isWithinBounds = (x, y) => x >= 0 && y >= 0 && x < n && y < n && grid[x][y] === 0;
 
     while (queue.length) {
-        const [row, col, pathLength] = queue.shift();
+        const [currentRow, currentCol, currentPathLength] = queue.shift();
 
-        if (row === gridSize - 1 && col === gridSize - 1) return pathLength;
+        if (currentRow === n - 1 && currentCol === n - 1) return currentPathLength;
 
         for (const [dx, dy] of directions) {
-            const newRow = row + dx;
-            const newCol = col + dy;
+            const nextRow = currentRow + dx;
+            const nextCol = currentCol + dy;
 
-            if (isValid(newRow, newCol)) {
-                queue.push([newRow, newCol, pathLength + 1]);
-                grid[newRow][newCol] = 1; 
+            if (isWithinBounds(nextRow, nextCol)) {
+                queue.push([nextRow, nextCol, currentPathLength + 1]);
+                grid[nextRow][nextCol] = 1;
             }
         }
     }
